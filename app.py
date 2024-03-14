@@ -64,6 +64,29 @@ with ui.sidebar(open='open'):
 # When passing in multiple arguments to a function, separate them with commas.
 
 with ui.layout_columns():
+    with ui.card():
+        ui.card_header("Plotly Histogram: Species")
+        @render_plotly
+        def penguins_plot1():
+            return px.histogram(penguins, x="species")
+
+    with ui.card():
+        ui.card_header("Seaborn Histogram: Species")
+        @render.plot
+        def penguins_plot2():
+            return sns.histplot(data=penguins, x="species")
+
+with ui.layout_columns(): 
+    with ui.card():
+        ui.card_header("Plotly Scatterplot: Species")
+        @render_plotly
+        def plotly_scatterplot():
+        # Create a Plotly scatterplot using Plotly Express
+        # Call px.scatter() function
+        # Pass in six arguments
+            return px.scatter(penguins,x="bill_length_mm", y="bill_depth_mm", color="island", symbol="species")
+
+with ui.layout_columns():
     @render.data_frame
     def penguins_df1():
          return render.DataGrid(penguins)
@@ -71,23 +94,3 @@ with ui.layout_columns():
     @render.data_frame
     def penguins_df2():
          return render.DataTable(penguins)
-
-with ui.layout_columns():
-    with ui.card(full_screen=True):
-
-        ui.card_header("Plotly Histogram: Species")
-        @render_plotly
-        def penguins_plot1():
-            return px.histogram(penguins, x="species")
-
-        ui.card_header("Seaborn Histogram: Species")
-        @render.plot
-        def penguins_plot2():
-            return sns.histplot(data=penguins, x="species")
-
-
-#    @render_plotly
-#    def plotly_scatterplot():
-        # Create a Plotly scatterplot using Plotly Express
-        # Call px.scatter() function
-        # Pass in six arguments

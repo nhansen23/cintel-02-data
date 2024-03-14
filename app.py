@@ -68,13 +68,13 @@ with ui.layout_columns():
         ui.card_header("Plotly Histogram: Species")
         @render_plotly
         def penguins_plot1():
-            return px.histogram(penguins, x="species")
+            return px.histogram(penguins, x=input.selected_attribute(),nbins=input.plotly_bin_count())
 
     with ui.card():
         ui.card_header("Seaborn Histogram: Species")
         @render.plot
         def penguins_plot2():
-            return sns.histplot(data=penguins, x="species")
+            return sns.histplot(data=penguins, x=input.selected_attribute(),bins=input.plotly_bin_count())
 
 with ui.layout_columns(): 
     with ui.card():
@@ -84,7 +84,7 @@ with ui.layout_columns():
         # Create a Plotly scatterplot using Plotly Express
         # Call px.scatter() function
         # Pass in six arguments
-            return px.scatter(penguins,x="bill_length_mm", y="bill_depth_mm", color="island", symbol="species")
+            return px.scatter(penguins,x=input.selected_attribute(), y="bill_depth_mm", color="island", symbol="species")
 
 with ui.layout_columns():
     @render.data_frame

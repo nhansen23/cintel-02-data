@@ -3,6 +3,7 @@ from shiny.express import input, ui
 from shinywidgets import render_plotly
 from shiny import render
 import palmerpenguins
+import seaborn as sns
 
 # Use the built-in function to load the Palmer Penguins dataset
 penguins = palmerpenguins.load_penguins()
@@ -62,24 +63,31 @@ with ui.sidebar(open='open'):
 
 # When passing in multiple arguments to a function, separate them with commas.
 
-@render.data_frame
-def penguins_df():
-    return render.DataGrid(penguins)
-        
-with ui.layout_columns(
-    data_grid,
-    data_table,    
-)
+with ui.layout_columns():
+    @render.data_frame
+    def penguins_df1():
+         return render.DataGrid(penguins)
+
+    @render.data_frame
+    def penguins_df2():
+         return render.DataTable(penguins)
+
+with ui.layout_columns():
+    with ui.card(full_screen=True):
+
+        ui.card_header("Plotly Histogram: Species")
+        @render_plotly
+        def penguins_plot1():
+            return px.histogram(penguins, x="species")
+
+        ui.card_header("Seaborn Histogram: Species")
+        @render.plot
+        def penguins_plot2():
+            return sns.histplot(data=penguins, x="species")
 
 
-data_grid = ui.card(
-    ui.card_header("Data Grid Card"),
-    ui.output_plot("data_grid_card"),
-    full_screen=True,
-)
-
-data_table = ui.card(
-    ui.card_header("Data Table Card"),
-    ui.output_plot("data_table_card"),
-    full_screen=True,
-)
+#    @render_plotly
+#    def plotly_scatterplot():
+        # Create a Plotly scatterplot using Plotly Express
+        # Call px.scatter() function
+        # Pass in six arguments
